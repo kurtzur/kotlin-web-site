@@ -309,3 +309,27 @@ perspective
 >
 > - 1.4: deprecate `Double.toShort()/toByte()` and `Float.toShort()/toByte()` and propose replacement
 > - 1.5.0: raise the deprecation level to error
+
+## Tools
+
+### Use only one JVM testing framework
+
+> **Issue**: [KT-40225](https://youtrack.jetbrains.com/issue/KT-40225)
+>
+> **Component**: Gradle
+>
+> **Incompatible change type**: behavioral
+>
+> **Short summary**: several mutual exclusive JVM test frameworks dependencies could have been in a project because one 
+> of them being a transitive dependency. From now Gradle won't allow having mutual exclusive JVM test frameworks.
+> 
+> **Way to fix**: [manually exclude](https://youtrack.jetbrains.com/issue/KT-46090#focus=Comments-27-4844333.0-0) 
+> the test framework which is brought transitively. Test your application. If it fails in the runtime, write to 
+> the authors of a lib which brings the test framework transitively and ask them if they could change the scope of the dependency to `test`. 
+> If they couldn't, use the same test framework as the library does.
+>
+> **Deprecation cycle**:
+>
+> - < 1.5: old behavior – having several mutual exclusive JVM test frameworks allowed
+> - \>= 1.5: behavior changed,
+>  Gradle throws an exception like "Cannot select module with conflict on capability..."
